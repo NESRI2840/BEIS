@@ -1,0 +1,258 @@
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, AfterViewInit } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
+import * as Highcharts from 'highcharts/highstock';
+import IndicatorsCore from 'highcharts/indicators/indicators';
+import SMA from 'highcharts/indicators/ema';
+import BollingerBands from 'highcharts/indicators/bollinger-bands';
+import RSI from 'highcharts/indicators/rsi';
+import MACD from 'highcharts/indicators/macd';
+import Stochastic from 'highcharts/indicators/stochastic';
+import { Subscription } from 'rxjs';
+import { StockService } from '../services/stock.service';
+import { StockModel } from '../models/stock.model';
+import { NgZone } from '@angular/core';
+
+// Load the indicators
+IndicatorsCore(Highcharts);
+SMA(Highcharts);
+BollingerBands(Highcharts);
+RSI(Highcharts);
+MACD(Highcharts);
+Stochastic(Highcharts);
+
+@Component({
+  selector: 'app-price-tab',
+  templateUrl: './price-tab.component.html',
+  styleUrls: ['./price-tab.component.css'],
+})
+export class PriceTabComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+  @Input() stockSymbol: string | null = null;
+
+  Highcharts: typeof Highcharts = Highcharts;
+  chartOptions: Highcharts.Options = {};
+  indicators = {
+    sma: true,
+    bb: true,
+    rsi: true,
+    macd: false,
+    stochastic: false,
+  };
+
+  indicatorPeriods = {
+    sma: 20,
+    bb: 20,
+    rsi: 14,
+    macd: { shortPeriod: 12, longPeriod: 26, signalPeriod: 9 },
+    stochastic: { kPeriod: 14, dPeriod: 3 },
+  };
+
+  private stockSubscription: Subscription | null = null;
+
+  constructor(
+    private stockService: StockService,
+    @Inject(PLATFORM_ID) private platformId: object,
+    private ngZone: NgZone
+  ) {}
+
+  ngOnInit(): void {
+    if (this.stockSymbol && isPlatformBrowser(this.platformId)) {
+      this.loadStockData(this.stockSymbol);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['stockSymbol'] && this.stockSymbol && isPlatformBrowser(this.platformId)) {
+      this.loadStockData(this.stockSymbol);
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.stockSymbol && isPlatformBrowser(this.platformId)) {
+      this.loadStockData(this.stockSymbol);
+    }
+  }
+
+  private loadStockData(symbol: string): void {
+    if (this.stockSubscription) {
+      this.stockSubscription.unsubscribe();
+    }
+
+    this.stockSubscription = this.stockService.getSelectedStock().subscribe((stock) => {
+      if (stock?.symbol === symbol) {
+        this.ngZone.runOutsideAngular(() => {
+          this.updateChart(stock);
+        });
+      }
+    });
+  }
+
+  private updateChart(stock: StockModel): void {
+    const ohlc = stock.trades.map((trade) => [
+      trade.time, // Timestamp
+      trade.open, // Open price
+      trade.high, // High price
+      trade.low,  // Low price
+      trade.close, // Close price
+    ]);
+
+    const volume = stock.trades.map((trade) => [trade.time, trade.quantity]);
+
+    const series: Highcharts.SeriesOptionsType[] = [
+      {
+        type: 'candlestick',
+        id: 'ohlc',
+        name: stock.symbol,
+        data: ohlc,
+        tooltip: {
+          valueDecimals: 2,
+        },
+      },
+      {
+        type: 'column',
+        id: 'volume',
+        name: 'Volume',
+        data: volume,
+        yAxis: 1,
+      },
+    ];
+
+    if (this.indicators.sma) {
+      series.push({
+        type: 'sma',
+        name: `${this.indicatorPeriods.sma}-Day SMA`,
+        linkedTo: 'ohlc',
+        params: { period: this.indicatorPeriods.sma },
+      });
+    }
+
+    if (this.indicators.bb) {
+      series.push({
+        type: 'bb',
+        name: `${this.indicatorPeriods.bb}-Day Bollinger Bands`,
+        linkedTo: 'ohlc',
+        params: { period: this.indicatorPeriods.bb, standardDeviation: 2 },
+      });
+    }
+
+    if (this.indicators.rsi) {
+      series.push({
+        type: 'rsi',
+        name: `${this.indicatorPeriods.rsi}-Day RSI`,
+        linkedTo: 'ohlc',
+        yAxis: 2,
+        params: { period: this.indicatorPeriods.rsi },
+      });
+    }
+
+    if (this.indicators.macd) {
+      series.push({
+        type: 'macd',
+        name: 'MACD',
+        linkedTo: 'ohlc',
+        yAxis: 2,
+        params: {
+          shortPeriod: this.indicatorPeriods.macd.shortPeriod,
+          longPeriod: this.indicatorPeriods.macd.longPeriod,
+          signalPeriod: this.indicatorPeriods.macd.signalPeriod,
+        },
+      });
+    }
+
+    if (this.indicators.stochastic) {
+      series.push({
+        type: 'stochastic',
+        name: 'Stochastic Oscillator',
+        linkedTo: 'ohlc',
+        yAxis: 2,
+        params: {
+          period: this.indicatorPeriods.stochastic.kPeriod,
+          signalPeriod: this.indicatorPeriods.stochastic.dPeriod,
+        },
+      });
+    }
+
+    this.chartOptions = {
+      rangeSelector: { selected: 1 },
+      title: { text: `${stock.name} Price Analysis` },
+      yAxis: [
+        { height: '60%', labels: { align: 'right' }, title: { text: 'Price' } },
+        { top: '65%', height: '15%', labels: { align: 'right' }, title: { text: 'Volume' } },
+        { top: '80%', height: '20%', labels: { align: 'right' }, title: { text: 'Indicators' } },
+      ],
+      series,
+    };
+  }
+
+  toggleIndicator(type: string): void {
+    this.indicators[type] = !this.indicators[type];
+    if (this.stockSymbol) {
+      this.loadStockData(this.stockSymbol);
+    }
+  }
+
+  updatePeriod(type: string, value: number | { shortPeriod: number; longPeriod: number; signalPeriod: number }): void {
+    this.indicatorPeriods[type] = value;
+    if (this.stockSymbol) {
+      this.loadStockData(this.stockSymbol);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.stockSubscription) {
+      this.stockSubscription.unsubscribe();
+    }
+  }
+}
+
+//html  part
+<div *ngIf="stockSymbol">
+  <h2>{{ stockSymbol }} - Price Analysis</h2>
+
+  <!-- Toggle Indicators -->
+  <div>
+    <button mat-button (click)="toggleIndicator('sma')">Toggle SMA</button>
+    <button mat-button (click)="toggleIndicator('bb')">Toggle Bollinger Bands</button>
+    <button mat-button (click)="toggleIndicator('rsi')">Toggle RSI</button>
+    <button mat-button (click)="toggleIndicator('macd')">Toggle MACD</button>
+    <button mat-button (click)="toggleIndicator('stochastic')">Toggle Stochastic Oscillator</button>
+  </div>
+
+  <!-- Period Configuration -->
+  <div>
+    <label>
+      SMA Period:
+      <input type="number" [(ngModel)]="indicatorPeriods.sma" (change)="updatePeriod('sma', indicatorPeriods.sma)" />
+    </label>
+
+    <label>
+      BB Period:
+      <input type="number" [(ngModel)]="indicatorPeriods.bb" (change)="updatePeriod('bb', indicatorPeriods.bb)" />
+    </label>
+
+    <label>
+      RSI Period:
+      <input type="number" [(ngModel)]="indicatorPeriods.rsi" (change)="updatePeriod('rsi', indicatorPeriods.rsi)" />
+    </label>
+
+    <label>
+      MACD Periods:
+      Short: <input type="number" [(ngModel)]="indicatorPeriods.macd.shortPeriod" (change)="updatePeriod('macd', indicatorPeriods.macd)" />
+      Long: <input type="number" [(ngModel)]="indicatorPeriods.macd.longPeriod" (change)="updatePeriod('macd', indicatorPeriods.macd)" />
+      Signal: <input type="number" [(ngModel)]="indicatorPeriods.macd.signalPeriod" (change)="updatePeriod('macd', indicatorPeriods.macd)" />
+    </label>
+
+    <label>
+      Stochastic Periods:
+      %K: <input type="number" [(ngModel)]="indicatorPeriods.stochastic.kPeriod" (change)="updatePeriod('stochastic', indicatorPeriods.stochastic)" />
+      %D: <input type="number" [(ngModel)]="indicatorPeriods.stochastic.dPeriod" (change)="updatePeriod('stochastic', indicatorPeriods.stochastic)" />
+    </label>
+  </div>
+
+  <!-- Highcharts Chart -->
+  <highcharts-chart
+    [Highcharts]="Highcharts"
+    [options]="chartOptions"
+    style="width: 100%; height: 600px; display: block;"
+  ></highcharts-chart>
+</div>
