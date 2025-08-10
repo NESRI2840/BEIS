@@ -9,103 +9,149 @@
     <title>BEIS</title>
   </head>
   <body>
-    <header style="background-color: black">
-      <img src="IMAGE/beis.png" />
-      <h1 class="USERNAME">BRIGHTEEN ETHIOPIA INVESTMENT SOLUTION &TRADE;</h1>
-      <div class="topnav">
-        <div class="topnav">
-          <a class="active" href="#home">Home</a>
-          <a href="#news">News</a>
-          <a href="#contact">Contact</a>
-          <a href="#about">About</a>
+    <header class="beis-header">
+      <div class="beis-header-container">
+        <a href="#home" class="beis-logo-link">
+          <img src="IMAGE/beis.png" alt="BEIS Logo" class="beis-logo"/>
+        </a>
+        <div class="beis-header-content">
+          <h1 class="beis-title">BRIGHTEEN ETHIOPIA INVESTMENT SOLUTION & TRADE</h1>
+          <nav class="beis-nav">
+            <a class="active" href="#home">Home</a>
+            <a href="#news">News</a>
+            <a href="#contact">Contact</a>
+            <a href="#about">About</a>
+          </nav>
         </div>
-        <hr />
+        <button class="beis-nav-toggle" aria-label="Open navigation">&#9776;</button>
       </div>
     </header>
 
-    <main class="wrapper">
-      <aside>
-        <h2>this is aside element</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur saepe quos libero vero, eaque adipisci, eum dolore obcaecati voluptatibus cumque in fugiat ipsa non repellendus enim! Ius[...]
-        </p>
-      </aside>
-      <section>
-        <h2>this is the section </h2>
-        <p>
-          Lorem ipsum 50, dolor sit amet consectetur adipisicing elit.
-          Reprehenderit ducimus quisquam maiores odit vero, quibusdam excepturi,
-          minima numquam voluptatem officia sit? Molestias, aliquam? Ut sint
-          ratione beatae sed? Cumque, accusantium.Lorem ipsum dolor sit amet
-          consectetur adipisicing elit. quo eius quod! Impedit optio quis veritas
-          tenetur. Illo facilis quod vel unde omnis, quia magnam laborum
-          distinctio vitae voluptatum corporis.
-        </p>
+    <main class="beis-main">
+      <section class="beis-hero">
+        <div class="beis-hero-content">
+          <h2>Empowering Investment, Enabling Growth</h2>
+          <p>
+            Welcome to <strong>BRIGHTEEN ETHIOPIA INVESTMENT SOLUTION & TRADE</strong> (BEIS). <br>
+            We connect opportunities, deliver solutions, and drive sustainable growth in Ethiopia’s investment landscape.
+          </p>
+          <a href="#about" class="beis-btn beis-btn-primary">Learn More</a>
+        </div>
+        <div class="beis-hero-image">
+          <img src="IMAGE/hero-investment.jpg" alt="Investment Solutions" />
+        </div>
       </section>
-      <article>
-        <h2>this is the article</h2>
-        <p>
-          Lorem ipsum 50, dolor sit amet consectetur adipisicing elit.
-          Reprehenderit ducimus quisquam maiores odit vero, quibusdam excepturi,
-          minima numquam voluptatem officia sit? Molestias, aliquam? Ut sint
-          ratione beatae sed? Cumque, accusantium.Lorem ipsum dolor sit amet
-          consectetur adipisicing elit. quo eius quod! Impedit optio quis veritas
-          tenetur. Illo facilis quod vel unde omnis, quia magnam laborum
-          distinctio vitae voluptatum corporis.
-        </p>
-      </article>
+
+      <section class="beis-features">
+        <h2 class="beis-section-title">Why Choose BEIS?</h2>
+        <div class="beis-features-grid">
+          <div class="beis-feature-card">
+            <span class="beis-feature-icon">🌍</span>
+            <h3>Global Expertise</h3>
+            <p>Our team brings international standards and local insights to provide the best investment advice and solutions.</p>
+          </div>
+          <div class="beis-feature-card">
+            <span class="beis-feature-icon">🤝</span>
+            <h3>Trusted Partners</h3>
+            <p>We build lasting relationships with our clients and partners, ensuring transparency and reliability in every transaction.</p>
+          </div>
+          <div class="beis-feature-card">
+            <span class="beis-feature-icon">💡</span>
+            <h3>Innovative Solutions</h3>
+            <p>We leverage technology and creativity to deliver unique solutions tailored for your business and investment needs.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="beis-content-grid">
+        <aside class="beis-aside">
+          <h2>Latest Insights</h2>
+          <ul class="beis-insights-list">
+            <li>
+              <strong>Market Watch:</strong> Ethiopia’s investment climate grows with new government policies.
+            </li>
+            <li>
+              <strong>Success Story:</strong> How BEIS helped an international investor enter the Ethiopian market.
+            </li>
+            <li>
+              <strong>Upcoming Event:</strong> Investment Opportunities Expo 2025.
+            </li>
+          </ul>
+        </aside>
+        <section class="beis-main-section">
+          <h2>Our Services</h2>
+          <p>
+            At BEIS, we offer a comprehensive portfolio of services including business consultancy, market research, investment facilitation, and legal advisory. 
+            Our commitment is to provide end-to-end support for investors and entrepreneurs seeking to thrive in Ethiopia.
+          </p>
+          <ul class="beis-services-list">
+            <li>Investment Advisory & Facilitation</li>
+            <li>Market Entry Strategy</li>
+            <li>Legal & Regulatory Services</li>
+            <li>Business Incorporation</li>
+            <li>Trade & Export Solutions</li>
+          </ul>
+          <a href="#contact" class="beis-btn">Contact Us</a>
+        </section>
+        <article class="beis-article">
+          <h2>About Ethiopia</h2>
+          <p>
+            Ethiopia is one of Africa’s fastest growing economies, offering diverse opportunities in agriculture, manufacturing, energy, and services. BEIS is your trusted partner for navigating this promising landscape.
+          </p>
+        </article>
+      </section>
     </main>
-    <footer id="footer" style="background: #222; color: #f4f4f4; padding: 40px 0 0 0; font-family: 'Segoe UI', Arial, sans-serif;">
-      <div style="max-width: 1200px; margin: auto; padding: 0 24px;">
-        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 40px;">
-          <div style="flex: 1 1 260px;">
-            <img src="IMAGE/beis.png" alt="BEIS Logo" style="height: 60px; margin-bottom: 16px;" />
-            <p style="font-size: 1.05em; margin-bottom: 8px;">
+
+    <footer id="footer">
+      <div class="beis-footer-container">
+        <div class="beis-footer-top">
+          <div>
+            <img src="IMAGE/beis.png" alt="BEIS Logo" />
+            <p>
               <strong>BRIGHTEEN ETHIOPIA INVESTMENT SOLUTION & TRADE</strong>
             </p>
-            <p style="font-size: 0.97em; color: #bbb;">
-              Empowering Investments. Enabling Growth. <br>
+            <p class="beis-footer-location">
+              Empowering Investments. Enabling Growth.<br>
               Addis Ababa, Ethiopia
             </p>
           </div>
-          <div style="flex: 1 1 180px;">
-            <h3 style="margin-top: 0; color: #ffd700; font-size: 1.15em;">Quick Links</h3>
-            <ul style="list-style: none; padding: 0; margin: 0;">
-              <li><a href="#home" style="color: #f4f4f4; text-decoration: none;">Home</a></li>
-              <li><a href="#about" style="color: #f4f4f4; text-decoration: none;">About</a></li>
-              <li><a href="#news" style="color: #f4f4f4; text-decoration: none;">News</a></li>
-              <li><a href="#contact" style="color: #f4f4f4; text-decoration: none;">Contact</a></li>
+          <div>
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#news">News</a></li>
+              <li><a href="#contact">Contact</a></li>
             </ul>
           </div>
-          <div style="flex: 1 1 220px;">
-            <h3 style="margin-top: 0; color: #ffd700; font-size: 1.15em;">Contact</h3>
-            <p style="margin: 0 0 8px 0;">
-              <span style="display: inline-block; width: 22px;">📞</span>
-              <a href="tel:+251900000000" style="color: #f4f4f4; text-decoration: none;">+251 900 000 000</a>
-            </p>
-            <p style="margin: 0 0 8px 0;">
-              <span style="display: inline-block; width: 22px;">✉️</span>
-              <a href="mailto:info@beis.et" style="color: #f4f4f4; text-decoration: none;">info@beis.et</a>
-            </p>
-            <p style="margin: 0;">
-              <span style="display: inline-block; width: 22px;">🌐</span>
-              <a href="https://beis.et" style="color: #f4f4f4; text-decoration: none;">www.beis.et</a>
-            </p>
+          <div>
+            <h3>Contact</h3>
+            <p><span>📞</span> <a href="tel:+251900000000">+251 900 000 000</a></p>
+            <p><span>✉️</span> <a href="mailto:info@beis.et">info@beis.et</a></p>
+            <p><span>🌐</span> <a href="https://beis.et">www.beis.et</a></p>
           </div>
-          <div style="flex: 1 1 120px;">
-            <h3 style="margin-top: 0; color: #ffd700; font-size: 1.15em;">Follow Us</h3>
-            <div style="display: flex; gap: 18px;">
-              <a href="#" aria-label="Facebook" style="color: #f4f4f4; font-size: 1.5em; text-decoration: none;">&#x1F426;</a>
-              <a href="#" aria-label="LinkedIn" style="color: #f4f4f4; font-size: 1.5em; text-decoration: none;">&#x1F465;</a>
-              <a href="#" aria-label="Twitter" style="color: #f4f4f4; font-size: 1.5em; text-decoration: none;">&#x1F426;</a>
+          <div>
+            <h3>Follow Us</h3>
+            <div class="footer-social">
+              <a href="#" aria-label="Facebook">&#x1F426;</a>
+              <a href="#" aria-label="LinkedIn">&#x1F465;</a>
+              <a href="#" aria-label="Twitter">&#x1F426;</a>
             </div>
           </div>
         </div>
-        <hr style="border: none; border-top: 1px solid #333; margin: 32px 0 14px 0;">
-        <div style="text-align: center; padding-bottom: 18px; color: #aaa; font-size: 0.98em;">
+        <hr />
+        <div class="footer-bottom">
           &copy; 2025 BRIGHTEEN ETHIOPIA INVESTMENT SOLUTION & TRADE. All rights reserved.
         </div>
       </div>
     </footer>
+    <script>
+      // Responsive nav toggle
+      const navToggle = document.querySelector('.beis-nav-toggle');
+      const nav = document.querySelector('.beis-nav');
+      navToggle.addEventListener('click', () => {
+        nav.classList.toggle('open');
+      });
+    </script>
   </body>
-</html>
+  </html>
